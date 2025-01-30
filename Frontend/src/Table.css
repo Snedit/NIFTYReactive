@@ -1,0 +1,30 @@
+body{
+    color: #ffe;
+}
+.submitForm{
+    display: flex;
+    flex-direction: column;
+    gap:0.5em;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+h2{
+    /* margin: auto; */
+    /* width: fit-content; */
+    align-items: center;
+}
+input{
+    width: 90%;
+    padding: 5px;
+    border-radius: 10px;
+}
+.optionForm{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}

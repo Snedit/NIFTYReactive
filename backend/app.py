@@ -32,19 +32,16 @@ def get_all():
 
 # calculating the totals in the server side itself
         for item in data:
-            totalClose += item['Close']
-            totalOpen += item['Open']
-            totalHigh += item['High']
-            totalLow += item['Low']
+            totalClose += float(item['Close'])
+            totalOpen += float(item['Open'])
+            totalHigh += float(item['High'])
+            totalLow += float(item['Low'])
             item['_id'] = str(item['_id'])
         
         # im then appending the total values to the main data 
-        data["total_high"] = totalHigh
-        data["total_low"] = totalLow
-        data["total_open"] = totalOpen
-        data["total_close"] = totalClose
-
-        return jsonify({"message":"success","data":data}), 200
+        
+        print(data)
+        return jsonify({"message":"success","data":data,"total_high":totalHigh,"total_low" : totalLow,"total_open": totalOpen, "total_close": totalClose}), 200
     else:
         return jsonify({"error": "No Records Found"}), 404
 
@@ -63,15 +60,32 @@ def get_by_id(ticker):
 @app.route('/optionData', methods=['POST'])
 def create():
     data = request.get_json()
-    items = ["Ticker", "Date", "Time", "Open", "High", "Low", "Close", "Volume", "OI"]
-    for item in items:
+    items = {
+        "Ticker": str,
+        "Date": str,
+        "Time": str,
+        "Open": float,
+        "High": float,
+        "Low": float,
+        "Close": float,
+        "Volume": int,
+        "OI": int
+    }
+    
+    for item, item_type in items.items():
         if item not in data:
-            return jsonify({"error": "Missing Data fields"}), 400
+            print({"error": f"Missing Data field: {item}"})
+            return jsonify({"error": f"Missing Data field: {item}"}), 400
+        data["Open"] = float(data["Open"])
+        data["High"] = float(data["High"])
+        data["Low"] = float(data["Low"])
+        data["Close"] = float(data["Close"])
+        if not isinstance(data[item], item_type):
+            print({"error": f"Incorrect type for field: {item}. Expected {item_type.__name__}"})
+            return jsonify({"error": f"Incorrect type for field: {item}. Expected {item_type.__name__}"}), 400
     
     collection.insert_one(data)
-
-
-    return jsonify({"message":"Data inserted successfully"}), 201
+    return jsonify({"message": "Data inserted successfully"}), 201
 
 # Update data by ticker
 @app.route('/optionData/<string:ticker>', methods=['PUT'])
@@ -94,3 +108,41 @@ def delete_by_id(ticker):
 
 if __name__ == '__main__':
     app.run(debug=True)
+    class Ticker:
+        def __init__(self, Ticker, Date, Time, Open, High, Low, Close, Volume, OI):
+            self.Ticker = Ticker
+            self.Date = Date
+            self.Time = Time
+            self.Open = Open
+            self.High = High
+            self.Low = Low
+            self.Close = Close
+            self.Volume = Volume
+            self.OI = OI
+
+        @staticmethod
+        def from_dict(data):
+            return Ticker(
+                Ticker=data.get("Ticker"),
+                Date=data.get("Date"),
+                Time=data.get("Time"),
+                Open=data.get("Open"),
+                High=data.get("High"),
+                Low=data.get("Low"),
+                Close=data.get("Close"),
+                Volume=data.get("Volume"),
+                OI=data.get("OI")
+            )
+
+        def to_dict(self):
+            return {
+                "Ticker": self.Ticker,
+                "Date": self.Date,
+                "Time": self.Time,
+                "Open": self.Open,
+                "High": self.High,
+                "Low": self.Low,
+                "Close": self.Close,
+                "Volume": self.Volume,
+                "OI": self.OI
+            }
