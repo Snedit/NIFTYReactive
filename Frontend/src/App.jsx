@@ -10,7 +10,7 @@ function App() {
   return (
     <div>
       <h1>Option Tracker</h1>
-      <OptionForm></OptionForm>
+
       <OptionList></OptionList>
     </div>
   );

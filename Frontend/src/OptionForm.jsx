@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const OptionForm = () => {
+const OptionForm = ({ refreshData }) => {
   const [formData, setFormData] = useState({
     Ticker: "",
     Date: "",
@@ -29,10 +29,23 @@ const OptionForm = () => {
     e.preventDefault();
     axios
       .post("http://127.0.0.1:5000/optionData", formData)
+
       .then(() => {
         alert("Data Added Successfully!");
+        refreshData(); // ✅ Automatically refresh the table after submitting
+        setFormData({
+          // ✅ Clear form fields after submission
+          Ticker: "",
+          Date: "",
+          Time: "",
+          Open: "",
+          High: "",
+          Low: "",
+          Close: "",
+          Volume: "",
+          OI: "",
+        });
       })
-
       .catch((error) => console.error("Error adding data:", error));
   };
 
@@ -40,7 +53,7 @@ const OptionForm = () => {
     <div className="optionForm">
       <h2>Add New Option</h2>
       <form onSubmit={handleSubmit} className="submitForm">
-        <label for="Ticker">Enter Ticker</label>
+        <label htmlfor="Ticker">Enter Ticker</label>
         <input
           type="text"
           name="Ticker"
@@ -49,7 +62,7 @@ const OptionForm = () => {
           required
         />
 
-        <label for="Date">Enter Date:</label>
+        <label htmlFor="Date">Enter Date:</label>
         <input
           type="date"
           name="Date"
@@ -57,7 +70,7 @@ const OptionForm = () => {
           onChange={handleStringChange}
           required
         />
-        <label for="Time">Enter time:</label>
+        <label htmlFor="Time">Enter time:</label>
         <input
           type="time"
           name="Time"
@@ -65,7 +78,7 @@ const OptionForm = () => {
           onChange={handleStringChange}
           required
         />
-        <label for="Open">Enter Open Price:</label>
+        <label htmlFor="Open">Enter Open Price:</label>
         <input
           type="number"
           step="0.01"
@@ -74,7 +87,7 @@ const OptionForm = () => {
           onChange={handleFloatChange}
           required
         />
-        <label for="High">Enter High Price:</label>
+        <label htmlFor="High">Enter High Price:</label>
         <input
           type="number"
           step="0.01"
@@ -83,7 +96,7 @@ const OptionForm = () => {
           onChange={handleFloatChange}
           required
         />
-        <label for="Low">Enter Low Price:</label>
+        <label htmlFor="Low">Enter Low Price:</label>
         <input
           type="number"
           step="0.01"
@@ -92,7 +105,7 @@ const OptionForm = () => {
           onChange={handleFloatChange}
           required
         />
-        <label for="Close">Enter Close Price:</label>
+        <label htmlFor="Close">Enter Close Price:</label>
         <input
           type="number"
           step="0.01"
@@ -101,7 +114,7 @@ const OptionForm = () => {
           onChange={handleFloatChange}
           required
         />
-        <label for="Volume">Enter the volume:</label>
+        <label htmlFor="Volume">Enter the volume:</label>
         <input
           type="number"
           name="Volume"
@@ -109,7 +122,7 @@ const OptionForm = () => {
           onChange={handleIntChange}
           required
         />
-        <label for="OP">Enter the Open Interest:</label>
+        <label htmlFor="OP">Enter the Open Interest:</label>
         <input
           type="number"
           name="OI"

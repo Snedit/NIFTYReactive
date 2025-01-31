@@ -7,9 +7,12 @@ import os
 app = Flask(__name__)
 CORS(app)
 load_dotenv()
+#  storing the mongouri in env to enhance security
 mongo = os.environ.get("mongouri")
 client = MongoClient(mongo)
+# DB name is NiftyReactive
 db = client["NiftyReactive"]
+# collection name is Records
 collection = db["Records"]
 
 '''
@@ -108,41 +111,3 @@ def delete_by_id(ticker):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    class Ticker:
-        def __init__(self, Ticker, Date, Time, Open, High, Low, Close, Volume, OI):
-            self.Ticker = Ticker
-            self.Date = Date
-            self.Time = Time
-            self.Open = Open
-            self.High = High
-            self.Low = Low
-            self.Close = Close
-            self.Volume = Volume
-            self.OI = OI
-
-        @staticmethod
-        def from_dict(data):
-            return Ticker(
-                Ticker=data.get("Ticker"),
-                Date=data.get("Date"),
-                Time=data.get("Time"),
-                Open=data.get("Open"),
-                High=data.get("High"),
-                Low=data.get("Low"),
-                Close=data.get("Close"),
-                Volume=data.get("Volume"),
-                OI=data.get("OI")
-            )
-
-        def to_dict(self):
-            return {
-                "Ticker": self.Ticker,
-                "Date": self.Date,
-                "Time": self.Time,
-                "Open": self.Open,
-                "High": self.High,
-                "Low": self.Low,
-                "Close": self.Close,
-                "Volume": self.Volume,
-                "OI": self.OI
-            }

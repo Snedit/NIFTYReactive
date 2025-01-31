@@ -1,7 +1,24 @@
 body{
+    
+    
+}
+h1{
+    text-align: center;
     color: #ffe;
 }
 .submitForm{
+    
+    width: 400px;
+    max-width: 90vw;
+
+}
+.optionForm h2{
+    
+    width: 100%;
+    text-align: center;
+}
+.submitForm{
+    margin: auto;
     display: flex;
     flex-direction: column;
     gap:0.5em;
@@ -25,6 +42,42 @@ input{
     width: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+}
+
+thead th, td{
+    padding: 10px;
+}
+table{
+    border-radius: 10px;
+    text-align: center;
+}
+.totals{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #333;
+    color: #ffe;
+}
+ #openTotal{
+    color: rgb(41, 241, 41);
+ }
+    #closeTotal{
+        color: rgb(223, 45, 45);
+    }
+    #highTotal{
+        color: rgb(41, 191, 241);
+    }
+    #lowTotal{
+        color: rgb(223, 164, 45);
+    }
+body{
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    /* align-items: center; */
+
+    width: fit-content;
+    margin: auto;
 }
