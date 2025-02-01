@@ -1,5 +1,5 @@
 flask
 gunicorn
 pymongo
-python_dotenv
-flask_cors
+python-dotenv
+flask-cors
