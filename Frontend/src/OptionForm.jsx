@@ -28,7 +28,7 @@ const OptionForm = ({ refreshData }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://127.0.0.1:5000/optionData", formData)
+      .post("https://niftyreactive.onrender.com/optionData", formData)
 
       .then(() => {
         alert("Data Added Successfully!");

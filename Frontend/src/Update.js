@@ -1,8 +1,10 @@
 import axios from "axios";
 
 const update = (ticker, newData, refreshData) => {
+  console.log("Updating data for", ticker, newData);
+  
   axios
-    .put(`http://127.0.0.1:5000/optionData/${ticker}`, newData)
+    .put(`https://niftyreactive.onrender.com/optionData/${ticker}`, newData)
     .then(() => {
       alert(`Ticker ${ticker} updated successfully!`);
       refreshData(); // Refresh table after update

@@ -15,19 +15,26 @@ h1{
 .optionForm h2{
     
     width: 100%;
+    color: lightcoral;
     text-align: center;
 }
 .submitForm{
     margin: auto;
+    color: white;
     display: flex;
     flex-direction: column;
     gap:0.5em;
     justify-content: center;
+    padding: 10px;
     align-items: center;
     border: 2px solid white;
     border-radius: 10px;
+    box-shadow: 0 0 10px 5px crimson;
 }
+.submitForm button{
+    background-color: rgb(125, 21, 44);
 
+}
 h2{
     /* margin: auto; */
     /* width: fit-content; */
@@ -65,7 +72,7 @@ table{
     color: rgb(41, 241, 41);
  }
     #closeTotal{
-        color: rgb(223, 45, 45);
+        color: rgb(233, 63, 63);
     }
     #highTotal{
         color: rgb(41, 191, 241);
@@ -90,3 +97,39 @@ body{
     margin-bottom: 5%;
 }
 
+.pagination{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+}
+.searchResultsContainer{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #333;
+    color: #ffe;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px 5px crimson;
+    z-index: 100;   
+
+}
+
+.closeButton
+{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    color: #ffe;
+    background-color: crimson;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+}

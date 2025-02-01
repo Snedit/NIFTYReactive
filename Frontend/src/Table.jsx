@@ -2,17 +2,42 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Table.css";
 import OptionForm from "./OptionForm";
+import DisplaySearchResults from "./SearchResult";
 import deleteItem from "./Delete";
 import update from "./Update";
 
+const handleSearch = (searchTicker) => {
+  if (!searchTicker.trim()) {
+    alert("Please enter a valid Ticker!");
+    return;
+  }
+
+  axios
+    .get(`https://niftyreactive.onrender.com/optionData/${searchTicker}`)
+    .then((response) => {
+      if (response.data) {
+        setSearchResult(response.data); // Set the found record
+      } else {
+        alert("Ticker not found!");
+        setSearchResult(null);
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching Ticker:", error);
+      alert("Ticker not found!");
+      setSearchResult(null);
+    });
+};
 const OptionList = () => {
   const [options, setOptions] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [editValues, setEditValues] = useState({});
+  const [searchResult, setSearchResult] = useState([]);
+  const [searchTicker, setSearchTicker] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [filterDate, setFilterDate] = useState("");
-  const itemsPerPage = 1;
+  const itemsPerPage = 5;
   const [totalOpen, setTotalOpen] = useState(0);
   const [totalClose, setTotalClose] = useState(0);
   const [totalHigh, setTotalHigh] = useState(0);
@@ -21,7 +46,7 @@ const OptionList = () => {
   // Fetch data from backend
   const fetchData = () => {
     axios
-      .get("http://127.0.0.1:5000/optionData")
+      .get("https://niftyreactive.onrender.com/optionData")
       .then((response) => {
         const data = response.data.data || response.data;
         setOptions(data);
@@ -37,6 +62,39 @@ const OptionList = () => {
   };
 
   useEffect(fetchData, []);
+  const closeResults = () => {
+    setSearchResult([]);
+  };
+  const handleSearch = () => {
+    if (!searchTicker.trim()) {
+      alert("Please enter a valid Ticker!");
+      return;
+    }
+
+    axios
+      .get(`https://niftyreactive.onrender.com/optionData/${searchTicker}`)
+      .then((response) => {
+        if (response.data) {
+          console.log(response.data.data);
+          alert("found");
+          setSearchResult([response.data.data]);
+        } else {
+          alert("Ticker not found!");
+          setSearchResult([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching Ticker:", error);
+        alert("Ticker not found!");
+        setSearchResult(null);
+      });
+  };
+
+  // Clear search results
+  const clearSearch = () => {
+    setSearchTicker("");
+    setSearchResult(null);
+  };
 
   // Handle Date Filtering
   const handleDateChange = (e) => {
@@ -85,6 +143,29 @@ const OptionList = () => {
       <OptionForm refreshData={fetchData} />
       <h2 className="heading">Option Data</h2>
 
+      <div className="searchBar">
+        <input
+          type="text"
+          value={searchTicker}
+          onChange={(e) => setSearchTicker(e.target.value)}
+          placeholder="Search by Ticker..."
+          className="searchInput"
+        />
+        <button onClick={handleSearch} className="searchButton">
+          Search
+        </button>
+        {searchResult && searchResult.length > 0 && (
+          <DisplaySearchResults
+            searchResults={searchResult}
+            closeResults={closeResults}
+            refreshData={fetchData}
+          />
+        )}
+        <button onClick={() => setSearchTicker("")} className="resetButton">
+          Reset
+        </button>
+      </div>
+
       {/* Date Filter */}
       <div className="dateFilter">
         <label>Filter by Date:</label>
@@ -94,7 +175,6 @@ const OptionList = () => {
             setFilterDate("");
             setFilteredOptions(options);
           }}
-          className="ml-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
         >
           Reset
         </button>
@@ -119,7 +199,18 @@ const OptionList = () => {
           {currentItems.map((option, index) => (
             <tr key={index}>
               <td>{option.Ticker}</td>
-              <td>{option.Date}</td>
+              <td>
+                {editingIndex === index ? (
+                  <input
+                    type="Date"
+                    value={editValues.Date}
+                    onChange={(e) => handleInputChange(e, "Date")}
+                    className="edited"
+                  />
+                ) : (
+                  option.Date
+                )}
+              </td>
 
               {/* Editable Fields */}
               <td>
@@ -175,7 +266,7 @@ const OptionList = () => {
                   <input
                     type="number"
                     value={editValues.Volume}
-                    onChange={(e) => handleInputChange(e, "Close")}
+                    onChange={(e) => handleInputChange(e, "Volume")}
                     className="border p-1 rounded"
                   />
                 ) : (
@@ -187,7 +278,7 @@ const OptionList = () => {
                   <input
                     type="number"
                     value={editValues.OI}
-                    onChange={(e) => handleInputChange(e, "Close")}
+                    onChange={(e) => handleInputChange(e, "OI")}
                     className="border p-1 rounded"
                   />
                 ) : (
