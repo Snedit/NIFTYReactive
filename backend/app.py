@@ -63,6 +63,9 @@ def get_by_id(ticker):
 @app.route('/optionData', methods=['POST'])
 def create():
     data = request.get_json()
+    old = collection.find_one({"Ticker":data["Ticker"]})
+    if old:
+        return jsonify({"error": "Ticker already exists"}), 400
     items = {
         "Ticker": str,
         "Date": str,
@@ -94,7 +97,9 @@ def create():
 @app.route('/optionData/<string:ticker>', methods=['PUT'])
 def update(ticker):
     data = request.get_json()
-    del data["_id"]
+    if data["_id"]:
+        del data["_id"]
+        
     print("new data = " + str(data))
     # return jsonify({"message": "Record updated successfully"}), 200
     result = collection.update_one({"Ticker": ticker}, {"$set": data})
