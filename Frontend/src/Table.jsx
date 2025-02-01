@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Table.css";
-import OptionForm from "./OptionForm"; // Import the form component
+import OptionForm from "./OptionForm";
 import deleteItem from "./Delete";
+import update from "./Update";
+
 const OptionList = () => {
   const [options, setOptions] = useState([]);
-  const [filteredOptions, setFilteredOptions] = useState([]); // Stores filtered data
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editValues, setEditValues] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filterDate, setFilterDate] = useState("");
+  const itemsPerPage = 1;
   const [totalOpen, setTotalOpen] = useState(0);
   const [totalClose, setTotalClose] = useState(0);
   const [totalHigh, setTotalHigh] = useState(0);
   const [totalLow, setTotalLow] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [filterDate, setFilterDate] = useState(""); // Stores selected date
-  const itemsPerPage = 10; // Number of items per page
 
   // Fetch data from backend
   const fetchData = () => {
     axios
       .get("http://127.0.0.1:5000/optionData")
       .then((response) => {
-        console.log(response.data);
-        const data = response.data.data || response.data; // Ensure data is an array
+        const data = response.data.data || response.data;
         setOptions(data);
-        setFilteredOptions(data); // Set filtered options initially to all data
-
+        setFilteredOptions(data);
         setTotalHigh(response.data.total_high || 0);
         setTotalLow(response.data.total_low || 0);
         setTotalClose(response.data.total_close || 0);
@@ -34,7 +36,6 @@ const OptionList = () => {
       });
   };
 
-  // Load data when the component mounts
   useEffect(fetchData, []);
 
   // Handle Date Filtering
@@ -43,7 +44,7 @@ const OptionList = () => {
     setFilterDate(selectedDate);
 
     if (selectedDate === "") {
-      setFilteredOptions(options); // Show all if date is cleared
+      setFilteredOptions(options);
     } else {
       const filtered = options.filter((option) => option.Date === selectedDate);
       setFilteredOptions(filtered);
@@ -56,26 +57,42 @@ const OptionList = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredOptions.slice(indexOfFirstItem, indexOfLastItem);
 
+  // Handle Update Click
+  const handleEdit = (index, option) => {
+    setEditingIndex(index);
+    setEditValues({ ...option }); // Store current values
+  };
+
+  // Handle Input Change
+  const handleInputChange = (e, field) => {
+    setEditValues({ ...editValues, [field]: e.target.value });
+  };
+
+  // Handle Save Update
+  const handleSaveEdit = () => {
+    update(editValues.Ticker, editValues, fetchData);
+    setEditingIndex(null);
+  };
+
+  // Handle Cancel Update
+  const handleCancelEdit = () => {
+    setEditingIndex(null);
+    setEditValues({});
+  };
+
   return (
     <div>
-      {/* Auto-updating on form submission */}
       <OptionForm refreshData={fetchData} />
-
       <h2 className="heading">Option Data</h2>
 
-      {/* ✅ Date Filter Input */}
-      <div className="flex items-center mb-4">
-        <label className="mr-2 font-bold">Filter by Date:</label>
-        <input
-          type="date"
-          value={filterDate}
-          onChange={handleDateChange}
-          className="border border-gray-300 p-2 rounded-md focus:ring focus:ring-blue-200"
-        />
+      {/* Date Filter */}
+      <div className="dateFilter">
+        <label>Filter by Date:</label>
+        <input type="date" value={filterDate} onChange={handleDateChange} />
         <button
           onClick={() => {
             setFilterDate("");
-            setFilteredOptions(options); // Reset filter
+            setFilteredOptions(options);
           }}
           className="ml-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
         >
@@ -83,6 +100,7 @@ const OptionList = () => {
         </button>
       </div>
 
+      {/* Table */}
       <table border="1" className="displayTable">
         <thead>
           <tr>
@@ -92,6 +110,8 @@ const OptionList = () => {
             <th>High</th>
             <th>Low</th>
             <th>Close</th>
+            <th>Volume</th>
+            <th>OI</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -100,24 +120,119 @@ const OptionList = () => {
             <tr key={index}>
               <td>{option.Ticker}</td>
               <td>{option.Date}</td>
-              <td>{option.Open}</td>
-              <td>{option.High}</td>
-              <td>{option.Low}</td>
-              <td>{option.Close}</td>
+
+              {/* Editable Fields */}
               <td>
-                <button onClick={() => alert("Update Coming Soon!")}>
-                  Update
-                </button>
-                <button onClick={() => deleteItem(option.Ticker, fetchData)}>
-                  Delete
-                </button>
+                {editingIndex === index ? (
+                  <input
+                    type="number"
+                    value={editValues.Open}
+                    onChange={(e) => handleInputChange(e, "Open")}
+                    className="border p-1 rounded"
+                  />
+                ) : (
+                  option.Open
+                )}
+              </td>
+              <td>
+                {editingIndex === index ? (
+                  <input
+                    type="number"
+                    value={editValues.High}
+                    onChange={(e) => handleInputChange(e, "High")}
+                    className="border p-1 rounded"
+                  />
+                ) : (
+                  option.High
+                )}
+              </td>
+              <td>
+                {editingIndex === index ? (
+                  <input
+                    type="number"
+                    value={editValues.Low}
+                    onChange={(e) => handleInputChange(e, "Low")}
+                    className="border p-1 rounded"
+                  />
+                ) : (
+                  option.Low
+                )}
+              </td>
+              <td>
+                {editingIndex === index ? (
+                  <input
+                    type="number"
+                    value={editValues.Close}
+                    onChange={(e) => handleInputChange(e, "Close")}
+                    className="border p-1 rounded"
+                  />
+                ) : (
+                  option.Close
+                )}
+              </td>
+              <td>
+                {editingIndex === index ? (
+                  <input
+                    type="number"
+                    value={editValues.Volume}
+                    onChange={(e) => handleInputChange(e, "Close")}
+                    className="border p-1 rounded"
+                  />
+                ) : (
+                  option.Volume
+                )}
+              </td>
+              <td>
+                {editingIndex === index ? (
+                  <input
+                    type="number"
+                    value={editValues.OI}
+                    onChange={(e) => handleInputChange(e, "Close")}
+                    className="border p-1 rounded"
+                  />
+                ) : (
+                  option.OI
+                )}
+              </td>
+
+              {/* Actions */}
+              <td>
+                {editingIndex === index ? (
+                  <>
+                    <button
+                      onClick={handleSaveEdit}
+                      className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
+                    >
+                      ✔
+                    </button>
+                    <button
+                      onClick={handleCancelEdit}
+                      className="ml-2 bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600"
+                    >
+                      ❌
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleEdit(index, option)}
+                      className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={() => deleteItem(option.Ticker, fetchData)}
+                      className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2"
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      {/* Pagination Controls */}
       <div className="pagination">
         <button
           className="page-btn"
@@ -139,7 +254,6 @@ const OptionList = () => {
           Next
         </button>
       </div>
-
       <div className="totals">
         <p id="openTotal">
           <strong>Total Open: </strong> {totalOpen}

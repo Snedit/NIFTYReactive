@@ -6,7 +6,7 @@ const deleteItem = (ticker, refreshData) => {
       .delete(`http://127.0.0.1:5000/optionData/${ticker}`)
       .then(() => {
         alert("Record deleted successfully!");
-        refreshData(); // ✅ Refresh the table after deletion
+        refreshData();
       })
       .catch((error) => {
         console.error("Error deleting record:", error);

@@ -94,6 +94,9 @@ def create():
 @app.route('/optionData/<string:ticker>', methods=['PUT'])
 def update(ticker):
     data = request.get_json()
+    del data["_id"]
+    print("new data = " + str(data))
+    # return jsonify({"message": "Record updated successfully"}), 200
     result = collection.update_one({"Ticker": ticker}, {"$set": data})
     if result.modified_count:
         return jsonify({"message": "Record updated successfully"}), 200

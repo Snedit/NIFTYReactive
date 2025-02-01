@@ -81,3 +81,12 @@ body{
     width: fit-content;
     margin: auto;
 }
+.dateFilter input{
+    width: 60%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+.dateFilter{
+    margin-bottom: 5%;
+}
+
