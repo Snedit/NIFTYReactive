@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from dotenv import load_dotenv
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -119,5 +119,12 @@ def delete_by_id(ticker):
     else:
         return jsonify({"error": "Data not found"}), 404
 
+@app.route("/health")
+def health():
+    return jsonify({"message": "Server is up and running"}), 200
+
+@app.route("/")
+def home():
+    return render_template("index.html")
 if __name__ == '__main__':
     app.run(debug=True)

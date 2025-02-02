@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server Status</title>
+    <style>
+      /* Dark Theme Styling */
+      body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      h1 {
+        font-size: 2.5rem;
+      }
+      p {
+        font-size: 1.2rem;
+        margin-top: 10px;
+        color: #bbbbbb;
+      }
+      #status {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+      .status-circle {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 10px;
+      }
+      .online {
+        background-color: #4caf50;
+      } /* Green */
+      .offline {
+        background-color: #f44336;
+      } /* Red */
+      .checking {
+        background-color: #ff9800;
+      } /* Orange */
+
+      footer {
+        position: absolute;
+        bottom: 10px;
+        color: #888;
+        font-size: 0.9rem;
+      }
+      a {
+        color: cyan;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔗 NIFTY Backend Server</h1>
+    <p>This is the flask backend server</p>
+    <a
+      href="https://niftyreactive.vercel.app"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      The Live Site
+    </a>
+    <div id="status">
+      <span id="status-circle" class="status-circle checking"></span>
+      <span id="status-text">Checking...</span>
+    </div>
+
+    <footer>&copy; 2024 NIFTY Backend Monitor | Built with ❤️ by Soham</footer>
+
+    <script>
+      function checkServerStatus() {
+        //127.0.0.1:5000
+        // http: fetch("http://127.0.0.1:5000/health")
+        fetch("https://niftyreactive.onrender.com/health")
+          .then((response) => {
+            if (response.ok) {
+              document.getElementById("status-circle").className =
+                "status-circle online";
+              document.getElementById("status-text").innerText = "Online";
+            } else {
+              throw new Error("Server down");
+            }
+          })
+          .catch(() => {
+            document.getElementById("status-circle").className =
+              "status-circle offline";
+            document.getElementById("status-text").innerText = "Offline";
+          });
+      }
+
+      checkServerStatus();
+      setInterval(checkServerStatus, 60000); // Refresh every 1 minute
+    </script>
+  </body>
+</html>
