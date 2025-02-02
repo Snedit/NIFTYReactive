@@ -2,7 +2,7 @@ import axios from "axios";
 
 const update = (ticker, newData, refreshData) => {
   console.log("Updating data for", ticker, newData);
-  
+  // niftyreactive.onrender.com/optionData
   axios
     .put(`https://niftyreactive.onrender.com/optionData/${ticker}`, newData)
     .then(() => {

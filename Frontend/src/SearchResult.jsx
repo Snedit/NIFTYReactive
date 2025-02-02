@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import update from "./Update";
 import deleteItem from "./Delete";
 const DisplaySearchResults = ({ searchResults, closeResults, refreshData }) => {
@@ -30,6 +29,7 @@ const DisplaySearchResults = ({ searchResults, closeResults, refreshData }) => {
   // ✅ Handle Save Update
   const handleSaveEdit = () => {
     update(editValues.Ticker, editValues, refreshData);
+    closeResults();
   };
 
   // ✅ Handle Cancel Update
@@ -62,11 +62,14 @@ const DisplaySearchResults = ({ searchResults, closeResults, refreshData }) => {
                 onChange={(e) => handleInputChange(e, "Date")}
               />
             ) : (
-              `${result.Date} ${result.Time}`
+              <>
+                <strong> Date </strong>: {result.Date} |<strong> Time</strong>:
+                ${result.Time}
+              </>
             )}
           </p>
           <p>
-            Open:{" "}
+            <strong>Open:</strong>{" "}
             {editingIndex === index ? (
               <input
                 type="number"
@@ -77,7 +80,8 @@ const DisplaySearchResults = ({ searchResults, closeResults, refreshData }) => {
               result.Open
             )}{" "}
             <span>
-              High:{" "}
+              {" "}
+              | <strong>High: </strong>
               {editingIndex === index ? (
                 <input
                   type="number"
@@ -88,8 +92,8 @@ const DisplaySearchResults = ({ searchResults, closeResults, refreshData }) => {
                 result.High
               )}{" "}
             </span>
-            <span>
-              Low:{" "}
+            <p>
+              <strong>Low: </strong>
               {editingIndex === index ? (
                 <input
                   type="number"
@@ -99,23 +103,23 @@ const DisplaySearchResults = ({ searchResults, closeResults, refreshData }) => {
               ) : (
                 result.Low
               )}{" "}
-            </span>
-            <span>
-              Close:{" "}
-              {editingIndex === index ? (
-                <input
-                  type="number"
-                  value={editValues.Close}
-                  onChange={(e) => handleFloatChange(e, "Close")}
-                />
-              ) : (
-                result.Close
-              )}
-            </span>
+              <span>
+                | <strong>Close: </strong>
+                {editingIndex === index ? (
+                  <input
+                    type="number"
+                    value={editValues.Close}
+                    onChange={(e) => handleFloatChange(e, "Close")}
+                  />
+                ) : (
+                  result.Close
+                )}
+              </span>
+            </p>
           </p>
           <p>
             <span>
-              Volume:{" "}
+              <strong>Volume: </strong>
               {editingIndex === index ? (
                 <input
                   type="number"
@@ -127,7 +131,7 @@ const DisplaySearchResults = ({ searchResults, closeResults, refreshData }) => {
               )}{" "}
             </span>
             <span>
-              OI:{" "}
+              | <strong>OI: </strong>
               {editingIndex === index ? (
                 <input
                   type="number"

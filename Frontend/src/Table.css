@@ -1,114 +1,196 @@
-body{
-    
-    
-}
-h1{
+/* ✅ General Fixes */
+h1 {
     text-align: center;
     color: #ffe;
 }
-.submitForm{
-    
-    width: 400px;
-    max-width: 90vw;
 
-}
-.optionForm h2{
-    
-    width: 100%;
-    color: lightcoral;
-    text-align: center;
-}
-.submitForm{
+/* ✅ Ensure Form is Responsive */
+.submitForm {
+    width: 50%;
+    max-width: 90vw;
     margin: auto;
     color: white;
     display: flex;
     flex-direction: column;
-    gap:0.5em;
+    gap: 0.5em;
     justify-content: center;
     padding: 10px;
     align-items: center;
     border: 2px solid white;
     border-radius: 10px;
     box-shadow: 0 0 10px 5px crimson;
+    margin-bottom: 10%;
 }
-.submitForm button{
-    background-color: rgb(125, 21, 44);
 
+/* ✅ Button Styling */
+.submitForm button {
+    background-color: rgb(125, 21, 44);
+    width: 20%;
+    padding: 8px;
+    border-radius: 5px;
 }
-h2{
-    /* margin: auto; */
-    /* width: fit-content; */
-    align-items: center;
-}
-input{
+
+/* ✅ Ensure Input Fields Adjust */
+.submitForm input {
     width: 90%;
+    max-width: 300px;
     padding: 5px;
     border-radius: 10px;
 }
-.optionForm{
+.searchBar{
+    gap: 1em;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.searchContainer{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.resetButton{
+    position: absolute;
+    right: 4%;
+    background-color: transparent;
+    color: black;
+    padding: 0;
+    height: calc( max-content - 2%);
+    
+
+}
+.searchBar input{
+background-color: #fff;
+padding: 5px;
+border-radius: 5px;
+
+color: black;
+}
+
+
+.optionForm {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
 }
 
-thead th, td{
-    padding: 10px;
-}
-table{
+/* ✅ Make Table Responsive */
+table {
+    margin-top: 10px;
     border-radius: 10px;
     text-align: center;
+    width: 100%;
+    max-width: 100%;
+    border: 2px solid white;
+    box-shadow: 0 0 10px 3px cyan;
+    overflow-x: auto;
+    display: block;
 }
-.totals{
+td input{
+    width: 80%;
+    text-align: center;
+    padding: 2px;
+    border-radius: 10px;
+}
+th{
+    font-weight: bolder;
+}
+thead th, td {
+    
+    border-color: rgb(149, 149, 135);
+    padding: 10px;
+    font-size: 14px; /* ✅ Make text smaller on mobile */
+}
+
+/* ✅ Ensure Totals Box Adjusts */
+.totals {
     display: flex;
+    flex-wrap: wrap; /* ✅ Allow wrapping on small screens */
     justify-content: space-between;
     padding: 10px;
     border-radius: 10px;
     background-color: #333;
     color: #ffe;
+    margin-bottom: 2%;
 }
- #openTotal{
+
+/* ✅ Ensure Totals Display Properly */
+#openTotal {
     color: rgb(41, 241, 41);
- }
-    #closeTotal{
-        color: rgb(233, 63, 63);
-    }
-    #highTotal{
-        color: rgb(41, 191, 241);
-    }
-    #lowTotal{
-        color: rgb(223, 164, 45);
-    }
-body{
+}
+#closeTotal {
+    color: rgb(233, 63, 63);
+}
+#highTotal {
+    color: rgb(41, 191, 241);
+}
+#lowTotal {
+    color: rgb(223, 164, 45);
+}
+
+/* ✅ Body Adjustments for Centering */
+body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 100%;
+    margin: auto;
+    max-width: 95vw;
+}
+.filters{
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    justify-content: space-between;
+    margin-bottom: 2%;
+
+}
+/* ✅ Ensure Date Filter Input is Responsive */
+.dateFilter input {
+    
+    max-width: 300px;
 
     width: fit-content;
-    margin: auto;
+    border-radius: 10px;
+    height: auto;
+    padding: 10px;
 }
-.dateFilter input{
-    width: 60%;
-    margin-left: 2%;
-    margin-right: 2%;
-}
-.dateFilter{
-    margin-bottom: 5%;
+.dateFilter {
+    align-self: flex-start;    
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    gap: 1em;
+    width: 50%;
+    align-items: center;
 }
 
-.pagination{
+
+
+/* ✅ Pagination Controls for Mobile */
+.pagination {
     margin-top: 5%;
     margin-bottom: 5%;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    justify-content: space-between;
+    gap: 10px;
 }
-.searchResultsContainer{
+
+/* ✅ Search Results - Adjust for Mobile */
+.searchResultsContainer {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 90%; /* ✅ Make it responsive */
+    max-width: 400px; /* ✅ Prevent overflow */
     background-color: #333;
     color: #ffe;
     padding: 20px;
@@ -118,18 +200,127 @@ body{
     justify-content: center;
     align-items: center;
     box-shadow: 0 0 10px 5px crimson;
-    z-index: 100;   
-
+    z-index: 100;
 }
 
-.closeButton
-{
+/* ✅ Close Button Styling */
+.closeButton {
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 5px;
+    right: 5px;
     color: #ffe;
     background-color: crimson;
     padding: 5px;
     border-radius: 10px;
     cursor: pointer;
+    font-size: 14px;
+}
+
+/* ✅ Mobile-Friendly Adjustments */
+@media screen and (max-width: 600px) {
+    .submitForm {
+        width: 80vw;
+        margin: auto;
+    }
+    .filters{
+        margin: auto;
+        width: 100vw;
+        margin-bottom: 10%;
+    }
+    .searchBar{
+
+        width: fit-content;
+        gap: 0;
+        margin: 0;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+    .searchBar button{
+        margin-left: 20px;
+        margin-top: 10px;
+    }
+
+    .searchContainer{
+        
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: row;
+        
+    }
+
+    .searchContainer input{
+        width: 80%
+        
+
+
+    }
+    .searchContainer button{
+        width: 20%;
+        top: -4px;
+        /* height: fit-content; */
+        
+    }
+    .dateFilter{
+        
+        /* width: 20%; */
+        flex-direction: column;
+        align-self: flex-end;
+        gap: 0;
+    }
+    .dateFilter input{
+        width: 20%
+    }
+    h1, h2{
+        padding: 20px;
+    }
+    .totals {
+        flex-direction: column; /* ✅ Stack elements in mobile */
+        align-items: center;
+        text-align: center;
+    }
+
+    .pagination {
+        flex-direction: column; /* ✅ Stack buttons in mobile */
+        align-items: center;
+    }
+
+    table {
+margin-top: 20px;
+        font-size: 5px;
+       margin: auto;
+       align-self: center;
+       width: 90vw;
+        overflow: auto; /* ✅ Enable horizontal scrolling */
+        white-space: nowrap; /* ✅ Prevent text wrapping */
+    }
+   
+    .searchResultsContainer {
+        width: 80vw; /* ✅ Ensure it fits smaller screens */
+        max-width: 300px;
+        padding: 15px;
+    }
+
+    .closeButton {
+        font-size: 12px;
+        padding: 3px;
+    }
+    input::-webkit-outer-spin-button, 
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+      td input{
+        
+        width: 100%;
+        text-align: center;
+        padding: fit-content;
+        border-radius: 10px;
+    }
+    
+}
+
+.searchResultsContainer input{
+    display: block;
 }

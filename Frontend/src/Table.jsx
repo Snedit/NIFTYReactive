@@ -141,45 +141,48 @@ const OptionList = () => {
   return (
     <div>
       <OptionForm refreshData={fetchData} />
-      <h2 className="heading">Option Data</h2>
+      <h2 className="heading">NIFTY Records</h2>
 
-      <div className="searchBar">
-        <input
-          type="text"
-          value={searchTicker}
-          onChange={(e) => setSearchTicker(e.target.value)}
-          placeholder="Search by Ticker..."
-          className="searchInput"
-        />
-        <button onClick={handleSearch} className="searchButton">
-          Search
-        </button>
-        {searchResult && searchResult.length > 0 && (
-          <DisplaySearchResults
-            searchResults={searchResult}
-            closeResults={closeResults}
-            refreshData={fetchData}
-          />
-        )}
-        <button onClick={() => setSearchTicker("")} className="resetButton">
-          Reset
-        </button>
+      <div className="filters">
+        <div className="searchBar">
+          <div className="searchContainer">
+            <input
+              type="text"
+              value={searchTicker}
+              onChange={(e) => setSearchTicker(e.target.value)}
+              placeholder="Search by Ticker..."
+              className="searchInput"
+            />
+            <button onClick={() => setSearchTicker("")} className="resetButton">
+              X
+            </button>
+          </div>
+          <button onClick={handleSearch} className="searchButton">
+            Search
+          </button>
+          {searchResult && searchResult.length > 0 && (
+            <DisplaySearchResults
+              searchResults={searchResult}
+              closeResults={closeResults}
+              refreshData={fetchData}
+            />
+          )}
+        </div>
+
+        {/* Date Filter */}
+        <div className="dateFilter">
+          <label>Filter by Date:</label>
+          <input type="date" value={filterDate} onChange={handleDateChange} />
+          {/* <button
+            onClick={() => {
+              setFilterDate("");
+              setFilteredOptions(options);
+            }}
+          >
+            Reset
+          </button> */}
+        </div>
       </div>
-
-      {/* Date Filter */}
-      <div className="dateFilter">
-        <label>Filter by Date:</label>
-        <input type="date" value={filterDate} onChange={handleDateChange} />
-        <button
-          onClick={() => {
-            setFilterDate("");
-            setFilteredOptions(options);
-          }}
-        >
-          Reset
-        </button>
-      </div>
-
       {/* Table */}
       <table border="1" className="displayTable">
         <thead>
