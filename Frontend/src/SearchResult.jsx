@@ -63,8 +63,8 @@ const DisplaySearchResults = ({ searchResults, closeResults, refreshData }) => {
               />
             ) : (
               <>
-                <strong> Date </strong>: {result.Date} |<strong> Time</strong>:
-                ${result.Time}
+                <strong> Date </strong>: {result.Date} |<strong> Time</strong>:{" "}
+                {result.Time}
               </>
             )}
           </p>
