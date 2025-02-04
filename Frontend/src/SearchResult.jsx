@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import update from "./Update";
 import deleteItem from "./Delete";
+
 const DisplaySearchResults = ({ searchResults, closeResults, refreshData }) => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [editValues, setEditValues] = useState({});

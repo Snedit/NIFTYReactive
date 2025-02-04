@@ -139,25 +139,31 @@ const OptionList = () => {
   };
 
   return (
-    <div>
+    <div className="p-6 bg-gray-900 text-white min-h-screen">
       <OptionForm refreshData={fetchData} />
-      <h2 className="heading">NIFTY Records</h2>
+      <h2 className="text-3xl font-bold text-center my-6">NIFTY Records</h2>
 
-      <div className="filters">
-        <div className="searchBar">
+      <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
+        <div className="flex items-center bg-gray-800 p-2 rounded-lg w-full sm:w-auto">
           <div className="searchContainer">
             <input
               type="text"
               value={searchTicker}
               onChange={(e) => setSearchTicker(e.target.value)}
               placeholder="Search by Ticker..."
-              className="searchInput"
+              className="bg-gray-700 text-white px-3 py-2 rounded-md w-full"
             />
-            <button onClick={() => setSearchTicker("")} className="resetButton">
+            <button
+              onClick={() => setSearchTicker("")}
+              className="ml-2 text-red-500 hover:text-red-700"
+            >
               X
             </button>
           </div>
-          <button onClick={handleSearch} className="searchButton">
+          <button
+            onClick={handleSearch}
+            className="bg-blue-600 px-4 py-2 rounded-md ml-2 hover:bg-blue-700"
+          >
             Search
           </button>
           {searchResult && searchResult.length > 0 && (
@@ -170,9 +176,14 @@ const OptionList = () => {
         </div>
 
         {/* Date Filter */}
-        <div className="dateFilter">
-          <label>Filter by Date:</label>
-          <input type="date" value={filterDate} onChange={handleDateChange} />
+        <div className="flex items-center bg-gray-800 p-2 rounded-lg">
+          <label className="mr-2">Filter by Date:</label>
+          <input
+            type="date"
+            value={filterDate}
+            onChange={handleDateChange}
+            className="bg-gray-700 text-white p-2 rounded-md"
+          />
           {/* <button
             onClick={() => {
               setFilterDate("");
@@ -184,171 +195,173 @@ const OptionList = () => {
         </div>
       </div>
       {/* Table */}
-      <table border="1" className="displayTable">
-        <thead>
-          <tr>
-            <th>Ticker</th>
-            <th>Date</th>
-            <th>Open</th>
-            <th>High</th>
-            <th>Low</th>
-            <th>Close</th>
-            <th>Volume</th>
-            <th>OI</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((option, index) => (
-            <tr key={index}>
-              <td>{option.Ticker}</td>
-              <td>
-                {editingIndex === index ? (
-                  <input
-                    type="Date"
-                    value={editValues.Date}
-                    onChange={(e) => handleInputChange(e, "Date")}
-                    className="edited"
-                  />
-                ) : (
-                  option.Date
-                )}
-              </td>
-
-              {/* Editable Fields */}
-              <td>
-                {editingIndex === index ? (
-                  <input
-                    type="number"
-                    value={editValues.Open}
-                    onChange={(e) => handleInputChange(e, "Open")}
-                    className="border p-1 rounded"
-                  />
-                ) : (
-                  option.Open
-                )}
-              </td>
-              <td>
-                {editingIndex === index ? (
-                  <input
-                    type="number"
-                    value={editValues.High}
-                    onChange={(e) => handleInputChange(e, "High")}
-                    className="border p-1 rounded"
-                  />
-                ) : (
-                  option.High
-                )}
-              </td>
-              <td>
-                {editingIndex === index ? (
-                  <input
-                    type="number"
-                    value={editValues.Low}
-                    onChange={(e) => handleInputChange(e, "Low")}
-                    className="border p-1 rounded"
-                  />
-                ) : (
-                  option.Low
-                )}
-              </td>
-              <td>
-                {editingIndex === index ? (
-                  <input
-                    type="number"
-                    value={editValues.Close}
-                    onChange={(e) => handleInputChange(e, "Close")}
-                    className="border p-1 rounded"
-                  />
-                ) : (
-                  option.Close
-                )}
-              </td>
-              <td>
-                {editingIndex === index ? (
-                  <input
-                    type="number"
-                    value={editValues.Volume}
-                    onChange={(e) => handleInputChange(e, "Volume")}
-                    className="border p-1 rounded"
-                  />
-                ) : (
-                  option.Volume
-                )}
-              </td>
-              <td>
-                {editingIndex === index ? (
-                  <input
-                    type="number"
-                    value={editValues.OI}
-                    onChange={(e) => handleInputChange(e, "OI")}
-                    className="border p-1 rounded"
-                  />
-                ) : (
-                  option.OI
-                )}
-              </td>
-
-              {/* Actions */}
-              <td>
-                {editingIndex === index ? (
-                  <>
-                    <button
-                      onClick={handleSaveEdit}
-                      className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
-                    >
-                      ✔
-                    </button>
-                    <button
-                      onClick={handleCancelEdit}
-                      className="ml-2 bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600"
-                    >
-                      ❌
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => handleEdit(index, option)}
-                      className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
-                    >
-                      Update
-                    </button>
-                    <button
-                      onClick={() => deleteItem(option.Ticker, fetchData)}
-                      className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2"
-                    >
-                      Delete
-                    </button>
-                  </>
-                )}
-              </td>
+      <div className="overflow-x-auto">
+        <table className="w-full border border-gray-700">
+          <thead className="bg-gray-800">
+            <tr>
+              <th className="p-2">Ticker</th>
+              <th className="p-2">Date</th>
+              <th className="p-2">Open</th>
+              <th className="p-2">High</th>
+              <th className="p-2">Low</th>
+              <th className="p-2">Close</th>
+              <th className="p-2">Volume</th>
+              <th className="p-2">OI</th>
+              <th className="p-2">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="pagination">
+          </thead>
+          <tbody>
+            {currentItems.map((option, index) => (
+              <tr key={index}>
+                <td className="p-2">{option.Ticker}</td>
+                <td className="p-2">
+                  {editingIndex === index ? (
+                    <input
+                      type="Date"
+                      value={editValues.Date}
+                      onChange={(e) => handleInputChange(e, "Date")}
+                      className="edited"
+                    />
+                  ) : (
+                    option.Date
+                  )}
+                </td>
+
+                {/* Editable Fields */}
+                <td className="p-2">
+                  {editingIndex === index ? (
+                    <input
+                      type="number"
+                      value={editValues.Open}
+                      onChange={(e) => handleInputChange(e, "Open")}
+                      className="border p-1 rounded"
+                    />
+                  ) : (
+                    option.Open
+                  )}
+                </td>
+                <td className="p-2">
+                  {editingIndex === index ? (
+                    <input
+                      type="number"
+                      value={editValues.High}
+                      onChange={(e) => handleInputChange(e, "High")}
+                      className="border p-1 rounded"
+                    />
+                  ) : (
+                    option.High
+                  )}
+                </td>
+                <td className="p-2">
+                  {editingIndex === index ? (
+                    <input
+                      type="number"
+                      value={editValues.Low}
+                      onChange={(e) => handleInputChange(e, "Low")}
+                      className="border p-1 rounded"
+                    />
+                  ) : (
+                    option.Low
+                  )}
+                </td>
+                <td className="p-2">
+                  {editingIndex === index ? (
+                    <input
+                      type="number"
+                      value={editValues.Close}
+                      onChange={(e) => handleInputChange(e, "Close")}
+                      className="border p-1 rounded"
+                    />
+                  ) : (
+                    option.Close
+                  )}
+                </td>
+                <td className="p-2">
+                  {editingIndex === index ? (
+                    <input
+                      type="number"
+                      value={editValues.Volume}
+                      onChange={(e) => handleInputChange(e, "Volume")}
+                      className="border p-1 rounded"
+                    />
+                  ) : (
+                    option.Volume
+                  )}
+                </td>
+                <td className="p-2">
+                  {editingIndex === index ? (
+                    <input
+                      type="number"
+                      value={editValues.OI}
+                      onChange={(e) => handleInputChange(e, "OI")}
+                      className="border p-1 rounded"
+                    />
+                  ) : (
+                    option.OI
+                  )}
+                </td>
+
+                {/* Actions */}
+                <td className="p-2">
+                  {editingIndex === index ? (
+                    <>
+                      <button
+                        onClick={handleSaveEdit}
+                        className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
+                      >
+                        ✔
+                      </button>
+                      <button
+                        onClick={handleCancelEdit}
+                        className="ml-2 bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600"
+                      >
+                        ❌
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => handleEdit(index, option)}
+                        className="bg-blue-500 px-3 py-1 rounded-md hover:bg-blue-700"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => deleteItem(option.Ticker, fetchData)}
+                        className="bg-red-500 px-3 py-1 ml-2 rounded-md hover:bg-red-700"
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex justify-between items-center mt-6">
         <button
-          className="page-btn"
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          className="bg-gray-700 px-4 py-2 rounded-md hover:bg-gray-600"
           disabled={currentPage === 1}
         >
           Prev
         </button>
-        <span className="page-number">
+        <span>
           Page {currentPage} of {totalPages}
         </span>
         <button
-          className="page-btn"
           onClick={() =>
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
+          className="bg-gray-700 px-4 py-2 rounded-md hover:bg-gray-600"
           disabled={currentPage === totalPages}
         >
           Next
         </button>
       </div>
-      <div className="totals">
+      <div className="totals ">
         <p id="openTotal">
           <strong>Total Open: </strong> {totalOpen}
         </p>
